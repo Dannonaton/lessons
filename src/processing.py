@@ -11,6 +11,6 @@ def filter_by_state(data: List[Dict[str, str]], state: str = 'EXECUTED') -> List
 
 
 def sort_by_date(data: List[Dict[str, Any]], reverse: bool = True) -> List[Dict[str, Any]]:
-    """ Функция, для сортировки списка по дате  """
+    """ Функция, для сортировки списка по дате """
     return sorted(data, key=lambda x: x["date"], reverse=reverse)
 

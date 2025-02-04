@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Union
 
-from masks import get_mask_account, get_mask_card_number
+from src.masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(type_and_number: Union[str]) -> str:
@@ -11,7 +11,7 @@ def mask_account_card(type_and_number: Union[str]) -> str:
     if len(split_input) == 2:
         if split_input[0].lower() == "счет":
             new_input = "".join(split_input[-1])
-            return f"{split_input[0]}  {get_mask_account(new_input)}"
+            return f"{split_input[0]} {get_mask_account(new_input)}"
         else:
             new_input = "".join(split_input[-1])
             return f"{split_input[0]} {get_mask_card_number(new_input)}"
@@ -21,8 +21,6 @@ def mask_account_card(type_and_number: Union[str]) -> str:
     else:
         print("Вы ввели неккоректные данные")
 
-
-print(mask_account_card(input("Введите имя и номер карты  ")))
 
 
 def get_date(user_date: Union[str]) -> str:
@@ -34,4 +32,3 @@ def get_date(user_date: Union[str]) -> str:
     return new_date
 
 
-print(get_date("2024-03-11T02:26:18.671407"))

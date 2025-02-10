@@ -41,3 +41,51 @@ def test_filter_by_currency(transactions, currency):
     filtered_transactions = generators.filter_by_currency(transactions, currency)
     assert next(filtered_transactions)["id"] == 939719570
 
+
+@pytest.mark.parametrize('start, stop, expected', [(10, 12, ["0000 0000 0000 0010",
+                                                             "0000 0000 0000 0011",
+                                                             "0000 0000 0000 0012"]),
+                                                   (5, 6, ["0000 0000 0000 0005",
+                                                           "0000 0000 0000 0006"]),
+                                                   (1000, 1002, ["0000 0000 0000 1000",
+                                                                 "0000 0000 0000 1001",
+                                                                 "0000 0000 0000 1002"])])
+def test_card_number_generator(start, stop, expected):
+    result = generators.card_number_generator(start, stop)
+    assert next(result) == expected[0]
+    assert next(result) == expected[1]
+
+
+def test_card_number_generator_wrong_type():
+    with pytest.raises(TypeError):
+        next(generators.card_number_generator([1, 2, 3], 1))
+    with pytest.raises(TypeError):
+        next(generators.card_number_generator(5, "some_string"))
+
+
+def test_card_number_generator_boundary_values():
+    result_max = generators.card_number_generator(9999999999999998, 9999999999999999)
+    assert next(result_max) == "9999 9999 9999 9998"
+    assert next(result_max) == "9999 9999 9999 9999"
+
+
+def test_card_number_generator_after_boundary_values():
+    with pytest.raises(ValueError):
+        next(generators.card_number_generator(10000000000000000, 10000000000000001))
+
+
+def test_card_number_generator_wrong_start_stop():
+    with pytest.raises(ValueError):
+        next(generators.card_number_generator(7, 5))
+
+
+def test_transaction_descriptions_exceptions():
+    with pytest.raises(StopIteration):
+        next(generators.transaction_descriptions([]))
+
+
+def test_transaction_descriptions_wrong_type():
+    with pytest.raises(TypeError):
+        next(generators.transaction_descriptions(1))
+    with pytest.raises(TypeError):
+        next(generators.transaction_descriptions("some_string"))

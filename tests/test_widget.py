@@ -1,5 +1,7 @@
-import pytest
 from typing import Union
+
+import pytest
+
 from src import widget
 
 

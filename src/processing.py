@@ -1,9 +1,10 @@
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List
 
 new_data = []
 
 
-def filter_by_state(data: List[Dict[str, str]], state: str = "EXECUTED") -> List[Dict[str, Union[str, None]]]:
+def filter_by_state(data: List[Dict[str, str | int]], state: str = "EXECUTED") -> (
+        List)[Dict[str, str | int]]:
     """Функция, для сортировки по ключу"""
     for i in data:
         if i["state"] == state:

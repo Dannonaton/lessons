@@ -1,6 +1,7 @@
+from typing import Union
+
 import pytest
 
-from typing import Union
 from src import masks
 
 

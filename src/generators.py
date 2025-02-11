@@ -1,13 +1,17 @@
-from typing import Generator, List, Dict, Any
+from typing import Dict, Generator, List
 
-def filter_by_currency(transactions, currency):
+
+def filter_by_currency(transactions, currency_code='USD'):
     """Функция принимает на вход список со словарем и возвращает id операции"""
-    for transaction in transactions:
-        if transaction["operationAmount"]["currency"]["name"] == currency:
-            yield transaction
+    try:
+        for i in transactions:
+            if i.get('operationAmount').get('currency').get('code') == currency_code:
+                yield i
+    except StopIteration:
+        print('Ошибка')
 
 
-def transaction_descriptions(list_of_transactions: List[Dict[str, Any]]) -> Generator[str, None, None]:
+def transaction_descriptions(list_of_transactions: List[Dict[str, str | int]]) -> Generator[str, None, None]:
     """Генератор, принимающий список словарей с транзакциями и возвращающий описание каждой операции по очереди"""
     if not isinstance(list_of_transactions, list):
         raise TypeError('Ошибка типа данных')
@@ -15,17 +19,16 @@ def transaction_descriptions(list_of_transactions: List[Dict[str, Any]]) -> Gene
         yield transaction["description"]
 
 
-
-def card_number_generator(start: int, stop: int) -> Generator[str,  None, None]:
+def card_number_generator(start: int, stop: int) -> Generator[str, None, None]:
     """Генератор номеров банковских карт в формате ХХХХ ХХХХ ХХХХ ХХХХ"""
     if not isinstance(start, int) or not isinstance(stop, int):
         raise TypeError('Ошибка типа данных')
     if stop < start:
         raise ValueError('Граница диапазона указана не верно(в обратном порядке)')
     if len(str(start)) <= 16:
-        for number in range(start, stop +1):
+        for number in range(start, stop + 1):
             formated_card_number = "{:016}".format(number)
-            yield " ".join(formated_card_number[i * 4 : ( i + 1) * 4] for i in range(4))
+            yield " ".join(formated_card_number[i * 4 : (i + 1) * 4] for i in range(4))
     else:
         raise ValueError('Входные данные превышают допустимые значения')
 
@@ -93,5 +96,4 @@ transactions = [
     },
 ]
 
-
-print(list(transaction_descriptions(transactions)))
+print(list(filter_by_currency(transactions)))

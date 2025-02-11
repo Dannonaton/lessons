@@ -1,6 +1,7 @@
+from typing import List
+
 import pytest
 
-from typing import List
 from src.processing import filter_by_state, sort_by_date
 
 
@@ -12,7 +13,7 @@ from src.processing import filter_by_state, sort_by_date
      [{'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
       {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}])
 ])
-def test_filter_by_state(date: List[dict[str, str]], expected: List[dict[str, str]]) -> None:
+def test_filter_by_state(date: List[dict[str, str | int]], expected: List[dict[str, str | int]]) -> None:
     assert filter_by_state(date) == expected
 
 

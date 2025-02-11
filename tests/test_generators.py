@@ -56,35 +56,29 @@ def test_card_number_generator(start, stop, expected):
     assert next(result) == expected[1]
 
 
-def test_card_number_generator_wrong_type() -> None:
     with pytest.raises(TypeError):
         next(generators.card_number_generator([1, 2, 3], 1))
     with pytest.raises(TypeError):
         next(generators.card_number_generator(5, "some_string"))
 
 
-def test_card_number_generator_boundary_values() -> None:
     result_max = generators.card_number_generator(9999999999999998, 9999999999999999)
     assert next(result_max) == "9999 9999 9999 9998"
     assert next(result_max) == "9999 9999 9999 9999"
 
 
-def test_card_number_generator_after_boundary_values() -> None:
     with pytest.raises(ValueError):
         next(generators.card_number_generator(10000000000000000, 10000000000000001))
 
 
-def test_card_number_generator_wrong_start_stop() -> None:
     with pytest.raises(ValueError):
         next(generators.card_number_generator(7, 5))
 
 
-def test_transaction_descriptions_exceptions() -> None:
     with pytest.raises(StopIteration):
         next(generators.transaction_descriptions([]))
 
 
-def test_transaction_descriptions_wrong_type() -> None:
     with pytest.raises(TypeError):
         next(generators.transaction_descriptions(1))
     with pytest.raises(TypeError):

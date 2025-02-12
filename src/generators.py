@@ -2,7 +2,7 @@ from typing import Dict, Generator, List
 
 
 def filter_by_currency(transactions, currency_code='USD'):
-    """Функция принимает на вход список со словарем и возвращает id операции"""
+    """Функция принимает на вход список со словарем и возвращает id операции """
     for i in transactions:
         if i.get('operationAmount', {}).get('currency', {}).get('code') == currency_code:
             yield i

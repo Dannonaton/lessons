@@ -3,12 +3,9 @@ from typing import Dict, Generator, List
 
 def filter_by_currency(transactions, currency_code='USD'):
     """Функция принимает на вход список со словарем и возвращает id операции"""
-    try:
-        for i in transactions:
-            if i.get('operationAmount').get('currency').get('code') == currency_code:
-                yield i
-    except StopIteration:
-        print('Ошибка')
+    for i in transactions:
+        if i.get('operationAmount', {}).get('currency', {}).get('code') == currency_code:
+            yield i
 
 
 def transaction_descriptions(list_of_transactions: List[Dict[str, str | int]]) -> Generator[str, None, None]:

@@ -1,12 +1,11 @@
 import json
-import os
 from json import JSONDecodeError
 
 
-def check_operations_file(file_json: str) -> list:
+def check_operations_file(file_json) -> list:
     """Функция, принимает на вход json file и проверяет его"""
     try:
-        with open(file_json, 'r') as file:
+        with open(file_json) as file:
             try:
                 transaction = json.load(file)
             except JSONDecodeError:
@@ -21,9 +20,3 @@ def check_operations_file(file_json: str) -> list:
     except FileNotFoundError:
         print('Файл не найден')
         return []
-
-
-
-if __name__ == '__main__':
-    check_operations_file('../data/operations.json')
-    print()

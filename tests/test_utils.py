@@ -4,10 +4,12 @@ import pytest
 
 from src.utils import check_operations_file
 
+
 @pytest.fixture
 def path():
     path_to_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "operations.json")
     return path_to_file
+
 
 @pytest.fixture
 def path_empty_list():
@@ -33,6 +35,7 @@ def test_financial_transactions(path):
         "description": "Перевод организации",
         "from": "Maestro 1596837868705199",
         "to": "Счет 64686473678894779589"}
+
 
 def test_financial_transactions_nofile():
     assert check_operations_file('nofile') == []

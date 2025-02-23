@@ -12,4 +12,3 @@ def check_operations_file(path) -> list:
             return []
         else:
             return transaction_file
-

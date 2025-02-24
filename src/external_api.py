@@ -12,12 +12,11 @@ def currency_convertor(transaction: dict) -> float:
     amount = transaction["operationAmount"]["amount"]
     code = transaction["operationAmount"]["currency"]["code"]
     to = "RUB"
-    if transaction["operationAmount"]["currency"]["code"] == "USD" or transaction["operationAmount"][
-            "currency"]["code"] == "EUR":
+    if code != 'RUB':
         url = f'https://api.apilayer.com/exchangerates_data/convert?to={to}&from={code}&amount={amount}'
         payload = {}
         response = requests.get(url, headers={"apikey" : API_KEY}, data=payload)
         result = response.json()
-        return result["result"]
+        return round(result["result"], 2)
     else:
         return float(amount)

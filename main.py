@@ -1,5 +1,6 @@
 import json
 import re
+from collections import Counter
 
 import pandas as pd
 
@@ -39,10 +40,36 @@ def filter_transaction_by_currency(transactions, currency='руб.'):
     return [t for t in transactions if currency in t.get('amount', '').lower()]
 
 
-def filter_transaction_by_decription(transaction, search_string):
+def filter_transaction_by_decription(transactions, search_string):
     """Фильтруем транзакции по строке в описании"""
     pattern = re.compile(re.escape(search_string), re.IGNORECASE)
-    return [t for t in transaction if pattern.search(t.get('description', ''))]
+    return [t for t in transactions if pattern.search(t.get('description', ''))]
+
+
+# def couting_transaction_by_category(transactions, descriptions):
+#     desc_list = []
+#     result_dict = {}
+#
+#     for transaction in transactions:
+#         desc_list.append(transaction.get("description"))
+#
+#     counted = Counter(descriptions)
+#
+#     for key, values in counted.items():
+#         for category in descriptions:
+#             if category == key:
+#                 result_dict[category] = values
+#
+#     return result_dict
+
+def couting_transaction_by_category(transactions, descriptions):
+    desc_list = []
+
+    for transaction in transactions:
+        if transaction["description"] in descriptions:
+            desc_list.append(transaction["description"])
+    counted = Counter(desc_list)
+    return dict(counted)
 
 
 def main():
@@ -55,6 +82,7 @@ def main():
 
     choise = input("Пожалуйста, выберите опцию: ")
     transactions = []
+    descriptions = {'Перевод организации', 'Открытие вклада', 'Перевод со счета на счет', 'Перевод с карты на карту'}
 
     if choise == "1":
         transactions = load_transaction_file_from_json("../lessons/data/operations.json")
@@ -102,7 +130,7 @@ def main():
     if not transactions:
         print("Не найдено ни одной транзакции, подходящие под ваши условия фильтрации.")
     else:
-        print(f"Всего банковских операций в выборке {len(transactions)}")
+        print(f"Всего банковских операций в выборке {couting_transaction_by_category(transactions, descriptions)}")
         for transaction in transactions:
             print(f"{transaction.get('date', 'Неизвестная дата')} {transaction.get('description', 'Без описания')}")
             print(f"Сумма: {transaction.get('amount', 'Не указано')}")
